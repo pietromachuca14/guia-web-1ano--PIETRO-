@@ -1,0 +1,120 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Variáveis globais */
+:root {
+    /* Cores */
+    --primary-color: #2563EB;
+    --secondary-color: #10B981;
+    --text-color: #111827;
+    --light-background: #F3F4F6;
+    --border-color: #E5E7EB;
+
+    /* Tipografia */
+    --font-headings: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* Tema escuro */
+body[data-theme="dark"] {
+    --text-color: #F3F4F6;
+    --light-background: #111827;
+    --border-color: #374151;
+}
+
+/* Estilos globais */
+body {
+    font-family: var(--font-body);
+    background-color: var(--light-background);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilos do header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--light-background);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+header h1 {
+    font-family: var(--font-headings);
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* Estilos da navegação */
+nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+}
+
+/* Estilos do botão de tema */
+#theme-toggle {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: background-color 0.3s ease;
+}
+
+#theme-toggle:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Estilos do main */
+main {
+    margin-top: 80px;
+    padding: 2rem;
+    min-height: calc(100vh - 160px);
+}
+
+main h1 {
+    font-family: var(--font-headings);
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+/* Estilos do footer */
+footer {
+    padding: 1.5rem;
+    background-color: var(--light-background);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
