@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Guia Web | Boas Práticas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>Guia Profissional de Desenvolvimento Web</h1></div>
+        <nav aria-label="Navegação principal">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tecnologias.html">Tecnologias</a></li>
+                <li><a href="boas-praticas.html">Boas Práticas</a></li>
+                <li><a href="fluxo.html">Fluxo do Projeto</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" aria-pressed="false">Mudar Tema</button>
+    </header>
+
+    <main>
+        <h2>Boas Práticas Profissionais</h2>
+
+        <div class="accordion">
+            <section>
+                <h3><button class="acc-btn" aria-expanded="false">Semântica & Acessibilidade</button></h3>
+                <div class="acc-panel" hidden>
+                    <ul>
+                        <li>Use landmarks (header, main, footer) para estruturar.</li>
+                        <li>Imagens com alt descritivo.</li>
+                        <li>Labels conectados a inputs (for/id).</li>
+                    </ul>
+                    <pre><code>&lt;label for="nome"&gt;Nome&lt;/label&gt; &lt;input id="nome"/&gt;</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h3><button class="acc-btn" aria-expanded="false">Responsividade</button></h3>
+                <div class="acc-panel" hidden>
+                    <ul>
+                        <li>Mobile-first e Media Queries</li>
+                        <li>Use Flex e Grid para layouts</li>
+                        <li>Unidades relativas (rem, %) para tipografia</li>
+                    </ul>
+                    <pre><code>@media (min-width:600px){ .grid{grid-template-columns:repeat(3,1fr)} }</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h3><button class="acc-btn" aria-expanded="false">Organização de CSS</button></h3>
+                <div class="acc-panel" hidden>
+                    <ul>
+                        <li>Use convenções como BEM</li>
+                        <li>Variáveis CSS para cores e tipografia</li>
+                        <li>Comente blocos lógicos</li>
+                    </ul>
+                    <pre><code>/* .card__title */ .card__title{font-weight:600}</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h3><button class="acc-btn" aria-expanded="false">Performance</button></h3>
+                <div class="acc-panel" hidden>
+                    <ul>
+                        <li>Otimizar imagens e usar lazy-loading</li>
+                        <li>Evitar JS desnecessário no carregamento</li>
+                        <li>Minificar assets em produção</li>
+                    </ul>
+                    <pre><code>&lt;img src="foto.jpg" loading="lazy" alt="Foto"/&gt;</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h3><button class="acc-btn" aria-expanded="false">Versionamento & JS</button></h3>
+                <div class="acc-panel" hidden>
+                    <ul>
+                        <li>Mensagens de commit claras (feat:, fix:)</li>
+                        <li>Funções puras e tratamento de erros</li>
+                        <li>Testes unitários quando possível</li>
+                    </ul>
+                    <pre><code>try{ fetch('/api'); }catch(e){ console.error(e); }</code></pre>
+                </div>
+            </section>
+        </div>
+
+        <div class="checklist">
+            <h3>Checklist pessoal</h3>
+            <ul>
+                <li><label><input type="checkbox" data-check="semantica"> Semântica revisada</label></li>
+                <li><label><input type="checkbox" data-check="responsividade"> Responsividade testada</label></li>
+                <li><label><input type="checkbox" data-check="performance"> Otimização de imagens</label></li>
+            </ul>
+            <div>Progresso: <span id="check-progress">0%</span></div>
+        </div>
+
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script>
+        // Accordion
+        document.querySelectorAll('.acc-btn').forEach(btn=>{
+            btn.addEventListener('click', ()=>{
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', String(!expanded));
+                const panel = btn.closest('h3').nextElementSibling;
+                if(!expanded){ panel.hidden = false; panel.style.maxHeight = panel.scrollHeight + 'px'; }
+                else { panel.style.maxHeight = 0; setTimeout(()=>panel.hidden=true,300)}
+            });
+        });
+
+        // Checklist localStorage
+        const checks = document.querySelectorAll('[data-check]');
+        function updateProgress(){
+            const total = checks.length; const done = Array.from(checks).filter(c=>c.checked).length;
+            const pct = Math.round((done/total)*100);
+            document.getElementById('check-progress').textContent = pct + '%';
+            localStorage.setItem('checks', JSON.stringify(Array.from(checks).map(c=>c.checked)));
+        }
+        const saved = JSON.parse(localStorage.getItem('checks')||'[]');
+        checks.forEach((c,i)=>{ c.checked = saved[i]||false; c.addEventListener('change', updateProgress)});
+        updateProgress();
+    </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Guia Web | Tecnologias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>Guia Profissional de Desenvolvimento Web</h1></div>
+        <nav aria-label="Navegação principal">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tecnologias.html">Tecnologias</a></li>
+                <li><a href="boas-praticas.html">Boas Práticas</a></li>
+                <li><a href="fluxo.html">Fluxo do Projeto</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" aria-pressed="false">Mudar Tema</button>
+    </header>
+
+    <main>
+        <section aria-labelledby="tech-title">
+            <h2 id="tech-title">Panorama de Tecnologias</h2>
+            <div class="controls">
+                <label for="search-tech">Buscar:</label>
+                <input id="search-tech" type="search" placeholder="Pesquisar tecnologias..." aria-label="Pesquisar tecnologias">
+
+                <div class="filters" role="group" aria-label="Filtrar por categoria">
+                    <button class="filter" data-cat="all" aria-pressed="true">Todas</button>
+                    <button class="filter" data-cat="frontend">Front-end</button>
+                    <button class="filter" data-cat="backend">Back-end</button>
+                    <button class="filter" data-cat="db">Bancos</button>
+                    <button class="filter" data-cat="devops">DevOps</button>
+                    <button class="filter" data-cat="testes">Testes</button>
+                </div>
+                <button id="export-csv">Exportar CSV</button>
+            </div>
+
+            <div id="no-results" style="display:none">Nenhum resultado encontrado.</div>
+
+            <div class="grid tech-grid" id="tech-grid">
+                <!-- Cards serão gerados por JS -->
+            </div>
+        </section>
+    </main>
+
+    <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-content" role="document">
+            <button class="modal-close" aria-label="Fechar">Fechar</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        // Dados de tecnologias (mínimo 10)
+        const techs = [
+            {id:'react',name:'React',cat:'frontend',desc:'Biblioteca para construir UIs',pros:['Componentes','Grande ecossistema'],cons:['Curva inicial','JSX'],avoid:'Quando precisa de SEO extremo',link:'https://reactjs.org',level:'intermediário'},
+            {id:'vue',name:'Vue',cat:'frontend',desc:'Framework progressivo para UIs',pros:['Fácil aprendizado','Boa documentação'],cons:['Menor mercado que React','Ecosistema menor'],avoid:'Apps muito grandes com requisitos corporativos',link:'https://vuejs.org',level:'intermediário'},
+            {id:'angular',name:'Angular',cat:'frontend',desc:'Framework completo',pros:['Estruturado','TypeScript nativo'],cons:['Verboso','Curva acentuada'],avoid:'Pequenos projetos simples',link:'https://angular.io',level:'avançado'},
+            {id:'node',name:'Node.js',cat:'backend',desc:'Runtime JS no servidor',pros:['Mesmo idioma frontend','Grande ecossistema'],cons:['Single-thread','Gerenciamento de CPU'],avoid:'Processamento intensivo em CPU',link:'https://nodejs.org',level:'intermediário'},
+            {id:'django',name:'Django',cat:'backend',desc:'Framework Python para web',pros:['Rápido para CRUD','Bateria incluída'],cons:['Mais opinativo','Menos assíncrono'],avoid:'Realtime intensivo',link:'https://www.djangoproject.com',level:'intermediário'},
+            {id:'mysql',name:'MySQL',cat:'db',desc:'Banco relacional',pros:['Maduro','Fácil hospedagem'],cons:['Escalabilidade vertical','Menos JSON-friendly'],avoid:'Dados complexos não relacionais',link:'https://www.mysql.com',level:'básico'},
+            {id:'postgres',name:'PostgreSQL',cat:'db',desc:'Banco relacional avançado',pros:['Recursos avançados','Extensível'],cons:['Mais configuração','Uso de recursos'],avoid:'Ambientes sem DBA',link:'https://www.postgresql.org',level:'intermediário'},
+            {id:'mongodb',name:'MongoDB',cat:'db',desc:'Banco NoSQL orientado a documentos',pros:['Flexível','Escalável'],cons:['Consistência eventual','Não-relacional'],avoid:'Transações complexas',link:'https://www.mongodb.com',level:'intermediário'},
+            {id:'docker',name:'Docker',cat:'devops',desc:'Containers para isolar apps',pros:['Padronização','Portabilidade'],cons:['Complexidade extra','Overhead'],avoid:'Ambientes muito simples',link:'https://www.docker.com',level:'intermediário'},
+            {id:'cicd',name:'CI/CD',cat:'devops',desc:'Automação de build e deploy',pros:['Entrega contínua','Menos erros manuais'],cons:['Configuração inicial','Manutenção'],avoid:'Projetos muito pequenos',link:'https://en.wikipedia.org/wiki/Continuous_integration',level:'intermediário'},
+            {id:'jest',name:'Jest',cat:'testes',desc:'Framework de testes JS',pros:['Fácil de usar','Mocking integrado'],cons:['Consumo de memória','Focado em JS'],avoid:'Testes E2E complexos',link:'https://jestjs.io',level:'básico'},
+            {id:'cypress',name:'Cypress',cat:'testes',desc:'Testes E2E modernos',pros:['Depuração fácil','Dashboard'],cons:['Suporte limitado a múltiplos tabs','Ambiente'],avoid:'Testes unitários simples',link:'https://www.cypress.io',level:'intermediário'},
+        ];
+
+        // Renderização
+        const grid = document.getElementById('tech-grid');
+        function renderTechs(list){
+            grid.innerHTML = '';
+            list.forEach(t=>{
+                const el = document.createElement('article');
+                el.className = 'card tech-card';
+                el.dataset.cat = t.cat;
+                el.innerHTML = `
+                    <h3>${t.name} <span class="badge">${t.level}</span></h3>
+                    <p>${t.desc}</p>
+                    <p><strong>Prós:</strong> ${t.pros.join(', ')}</p>
+                    <p><strong>Contras:</strong> ${t.cons.join(', ')}</p>
+                    <div class="card-actions">
+                        <button class="details" data-id="${t.id}">Detalhes</button>
+                        <button class="fav" data-fav="${t.id}" aria-pressed="false">❤</button>
+                    </div>
+                `;
+                el.querySelector('.details').addEventListener('click', ()=> openModal(t));
+                grid.appendChild(el);
+            });
+        }
+        renderTechs(techs);
+
+        // Filtros
+        document.querySelectorAll('.filter').forEach(btn=>{
+            btn.addEventListener('click', ()=>{
+                const cat = btn.dataset.cat;
+                document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed','false'));
+                btn.setAttribute('aria-pressed','true');
+                let list = techs;
+                if(cat !== 'all') list = techs.filter(t=>t.cat===cat);
+                renderTechs(list);
+                localStorage.setItem('lastFilter', cat);
+            });
+        });
+        const last = localStorage.getItem('lastFilter');
+        if(last){ document.querySelector(`.filter[data-cat="${last}"]`)?.click(); }
+
+        // Busca já é tratada pelo app.js
+
+        // Modal
+        function openModal(t){
+            const modal = document.getElementById('modal');
+            const body = document.getElementById('modal-body');
+            body.innerHTML = `<h2>${t.name}</h2><p>${t.desc}</p><ul><li>Quando escolher:</li><li>${t.pros[0]}</li><li>${t.pros[1]}</li><li>${t.cons[0]}</li></ul><p><a href="${t.link}" target="_blank">Site oficial</a></p>`;
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden','false');
+        }
+
+        // Export CSV básico
+        document.getElementById('export-csv').addEventListener('click', ()=>{
+            const visible = Array.from(document.querySelectorAll('.tech-card')).filter(c=>c.style.display !== 'none');
+            const rows = visible.map(c=>{
+                return [c.querySelector('h3').textContent.trim(), c.dataset.cat, c.querySelector('p').textContent.trim()];
+            });
+            if(rows.length===0){ alert('Nenhuma tecnologia selecionada'); return }
+            const csv = rows.map(r=>r.map(v=>'"'+v.replace(/"/g,'""')+'"').join(',')).join('\n');
+            const blob = new Blob([csv],{type:'text/csv'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href=url; a.download='tecnologias.csv'; a.click(); URL.revokeObjectURL(url);
+        });
+
+        // Favoritos - simples
+        document.addEventListener('click',(e)=>{
+            if(e.target.matches('[data-fav]')){
+                const id = e.target.getAttribute('data-fav');
+                const favs = JSON.parse(localStorage.getItem('favs')||'[]');
+                const idx = favs.indexOf(id);
+                if(idx===-1) favs.push(id); else favs.splice(idx,1);
+                localStorage.setItem('favs', JSON.stringify(favs));
+                e.target.classList.toggle('is-fav');
+            }
+        });
+
+    </script>
+</body>
+</html>

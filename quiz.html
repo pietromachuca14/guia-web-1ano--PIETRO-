@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Guia Web | Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>Guia Profissional de Desenvolvimento Web</h1></div>
+        <nav aria-label="Navegação principal">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tecnologias.html">Tecnologias</a></li>
+                <li><a href="boas-praticas.html">Boas Práticas</a></li>
+                <li><a href="fluxo.html">Fluxo do Projeto</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" aria-pressed="false">Mudar Tema</button>
+    </header>
+
+    <main>
+        <h2>Quiz</h2>
+        <form id="quiz-form">
+            <ol id="questions"></ol>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="result" hidden></div>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script>
+        const q = [
+            {q:'Qual linguagem estrutura o conteúdo da web?', opts:['CSS','HTML','JS'], a:1, explain:'HTML é linguagem de marcação.'},
+            {q:'Qual é boa prática de acessibilidade?', opts:['Remover outlines','Usar alt em imagens','Usar cores aleatórias'], a:1, explain:'Alt descreve imagens.'},
+            {q:'Onde salvar preferência de tema no front-end?', opts:['sessionStorage','localStorage','cookie'], a:1, explain:'localStorage persiste entre sessões.'},
+            {q:'Qual ferramenta é para containers?', opts:['Docker','Jest','React'], a:0, explain:'Docker cria containers.'},
+            {q:'O que faz CSS?', opts:['Lógica','Estilo','Banco de dados'], a:1, explain:'CSS estiliza.'},
+            {q:'Melhor prática JS: tratar erros com?', opts:['try/catch','ignorar','console.log só'], a:0, explain:'try/catch ajuda no tratamento.'},
+            {q:'O que é CI/CD?', opts:['Design system','Automação de build e deploy','Banco de dados'], a:1, explain:'CI/CD automatiza entrega.'},
+            {q:'Qual escolher para banco NoSQL?', opts:['MySQL','PostgreSQL','MongoDB'], a:2, explain:'MongoDB é NoSQL orientado a documentos.'}
+        ];
+        const questions = document.getElementById('questions');
+        q.forEach((item, i)=>{
+            const li = document.createElement('li');
+            li.innerHTML = `<fieldset><legend>${item.q}</legend>` + item.opts.map((o,idx)=>`<label><input type="radio" name="q${i}" value="${idx}" required> ${o}</label>`).join('<br>') + `</fieldset>`;
+            questions.appendChild(li);
+        });
+
+        document.getElementById('quiz-form').addEventListener('submit', (e)=>{
+            e.preventDefault();
+            let score=0; const explanations=[];
+            q.forEach((item,i)=>{
+                const v = document.querySelector(`input[name="q${i}"]:checked`).value;
+                if(Number(v)===item.a) score++;
+                explanations.push({q:item.q, correct:item.opts[item.a], explain:item.explain});
+            });
+            const pct = Math.round((score/q.length)*100);
+            const best = Number(localStorage.getItem('bestScore')||0);
+            if(pct>best) localStorage.setItem('bestScore', String(pct));
+            const res = document.getElementById('result');
+            res.hidden = false;
+            res.innerHTML = `<h3>Você acertou ${score}/${q.length} (${pct}%). Melhor: ${localStorage.getItem('bestScore')}%</h3><ul>${explanations.map(x=>`<li><strong>${x.q}</strong> — resposta: ${x.correct}. ${x.explain}</li>`).join('')}</ul>`;
+        });
+    </script>
+</body>
+</html>

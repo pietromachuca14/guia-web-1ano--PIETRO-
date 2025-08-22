@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Guia Web | Fluxo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .timeline{display:flex;gap:1rem;overflow:auto;padding:1rem 0}
+        .step{min-width:200px;background:var(--fundo);border:1px solid var(--bordas);padding:1rem;border-radius:8px}
+        .svg-flow{width:100%;height:300px}
+        .tooltip{position:absolute;background:var(--fundo);border:1px solid var(--bordas);padding:.5rem;border-radius:6px;display:none}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>Guia Profissional de Desenvolvimento Web</h1></div>
+        <nav aria-label="Navegação principal">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tecnologias.html">Tecnologias</a></li>
+                <li><a href="boas-praticas.html">Boas Práticas</a></li>
+                <li><a href="fluxo.html">Fluxo do Projeto</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" aria-pressed="false">Mudar Tema</button>
+    </header>
+
+    <main>
+        <h2>Fluxo de um projeto web</h2>
+        <div class="timeline" role="list">
+            <div class="step" data-step="descoberta">Descoberta</div>
+            <div class="step" data-step="requisitos">Requisitos</div>
+            <div class="step" data-step="protótipo">Protótipo</div>
+            <div class="step" data-step="design">Design</div>
+            <div class="step" data-step="implementacao">Implementação</div>
+            <div class="step" data-step="testes">Testes</div>
+            <div class="step" data-step="preparacao">Preparação deploy</div>
+            <div class="step" data-step="publicacao">Publicação</div>
+            <div class="step" data-step="monitoramento">Monitoramento</div>
+        </div>
+
+        <svg class="svg-flow" viewBox="0 0 1000 300" role="img" aria-label="Fluxograma do projeto">
+            <defs>
+                <marker id="m" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 z" fill="#2563EB"></path>
+                </marker>
+            </defs>
+            <rect x="20" y="20" width="120" height="50" fill="#fff" stroke="#2563EB"></rect>
+            <text x="80" y="50" text-anchor="middle">Descoberta</text>
+            <line x1="140" y1="45" x2="220" y2="45" stroke="#2563EB" stroke-width="2" marker-end="url(#m)"></line>
+            <rect x="220" y="20" width="120" height="50" fill="#fff" stroke="#2563EB"></rect>
+            <text x="280" y="50" text-anchor="middle">Requisitos</text>
+            <!-- ... restante simplificado ... -->
+        </svg>
+
+        <div id="tooltip" class="tooltip" role="status"></div>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script>
+        const steps = document.querySelectorAll('.step');
+        const tooltip = document.getElementById('tooltip');
+        const info = {
+            'descoberta':{deliver:'Brief, entrevistas',risks:'Escopo mal definido'},
+            'requisitos':{deliver:'Documento de requisitos',risks:'Requisitos incompletos'},
+            'protótipo':{deliver:'Protótipos navegáveis',risks:'Expectativas desalinhadas'},
+            'design':{deliver:'Design system',risks:'Incoerência visual'},
+            'implementacao':{deliver:'Código funcional',risks:'Dívida técnica'},
+            'testes':{deliver:'Relatórios de testes',risks:'Cobertura insuficiente'},
+            'preparacao':{deliver:'Scripts de deploy',risks:'Configuração errada'},
+            'publicacao':{deliver:'Site no ar',risks:'Downtime'},
+            'monitoramento':{deliver:'Logs e métricas',risks:'Alertas falsos'}
+        };
+        steps.forEach(s=>{
+            s.addEventListener('click', ()=>{
+                const k = s.dataset.step;
+                const d = info[k];
+                tooltip.textContent = `${k}: Entregar ${d.deliver}. Riscos: ${d.risks}`;
+                const rect = s.getBoundingClientRect();
+                tooltip.style.left = (rect.left + window.scrollX) + 'px';
+                tooltip.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+                tooltip.style.display = 'block';
+                setTimeout(()=>tooltip.style.display='none',5000);
+            });
+        });
+    </script>
+</body>
+</html>

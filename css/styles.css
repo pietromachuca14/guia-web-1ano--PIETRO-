@@ -1,0 +1,71 @@
+/* Variáveis de tema */
+:root{
+    --primaria: #2563EB;
+    --secundaria: #10B981;
+    --texto: #111827;
+    --fundo: #F3F4F6;
+    --bordas: #E5E7EB;
+
+    --font-titulo: 'Poppins', sans-serif;
+    --font-texto: 'Inter', sans-serif;
+}
+
+[data-theme="dark"]{
+    --texto: #F3F4F6;
+    --fundo: #0B1220;
+    --bordas: #1F2937;
+}
+
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:var(--font-texto);
+    color:var(--texto);
+    background:var(--fundo);
+    -webkit-font-smoothing:antialiased;
+}
+
+header{
+    position:fixed;
+    top:0;left:0;right:0;
+    background:var(--fundo);
+    border-bottom:1px solid var(--bordas);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding:1rem 2rem;
+    z-index:1000;
+}
+
+.logo h1{font-family:var(--font-titulo);font-size:1.1rem;margin:0}
+
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
+nav a{color:var(--texto);text-decoration:none}
+
+#theme-toggle{background:var(--primaria);color:white;border:none;padding:.5rem 1rem;border-radius:6px;cursor:pointer}
+
+main{padding:6rem 2rem 2rem}
+
+.hero{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
+.hero h2{font-family:var(--font-titulo);font-size:2rem;margin:0}
+.hero p{max-width:60ch}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--bordas);padding:1rem;border-radius:8px}
+.card pre{background:rgba(0,0,0,0.05);padding:0.5rem;border-radius:6px;overflow:auto}
+
+footer{border-top:1px solid var(--bordas);padding:1rem 2rem;text-align:center;margin-top:2rem}
+
+/* mobile */
+@media (max-width:600px){
+    .hero h2{font-size:1.5rem}
+    nav{display:none}
+}
+
+.focus-visible:focus{outline:3px solid var(--secundaria);outline-offset:2px}
+
+/* acessibilidade reduz movimento */
+@media (prefers-reduced-motion: reduce){
+    *{transition:none!important}
+}

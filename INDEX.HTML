@@ -16,10 +16,8 @@
 <body>
     <!-- Cabeçalho com navegação principal -->
     <header>
-        <div>
-            <h1>Guia Profissional de Desenvolvimento Web</h1>
-        </div>
-        <nav>
+        <div class="logo"><h1>Guia Profissional de Desenvolvimento Web</h1></div>
+        <nav aria-label="Navegação principal">
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="tecnologias.html">Tecnologias</a></li>
@@ -28,17 +26,45 @@
                 <li><a href="quiz.html">Quiz</a></li>
             </ul>
         </nav>
-        <button id="theme-toggle">Mudar Tema</button>
+        <button id="theme-toggle" aria-pressed="false">Mudar Tema</button>
     </header>
 
     <!-- Conteúdo principal da página -->
     <main>
-        <!-- Conteúdo será adicionado posteriormente -->
+        <section class="hero" aria-labelledby="hero-title">
+            <h2 id="hero-title">Guia Profissional de Desenvolvimento Web</h2>
+            <p>Aprenda o essencial sobre HTML, CSS e JavaScript e como aplicar boas práticas profissionais em projetos reais.</p>
+            <a href="tecnologias.html" class="cta">Começar</a>
+        </section>
+
+        <section aria-labelledby="o-que" class="o-que">
+            <h3 id="o-que">O que é HTML, CSS e JS?</h3>
+            <div class="cards">
+                <article class="card" tabindex="0" aria-labelledby="html-title">
+                    <h4 id="html-title">HTML</h4>
+                    <p>HTML (HyperText Markup Language) estrutura o conteúdo da página com elementos semânticos.</p>
+                    <pre><code>&lt;p&gt;Olá, mundo!&lt;/p&gt;</code></pre>
+                    <p>Use para estruturar conteúdo e marcar semântica.</p>
+                </article>
+                <article class="card" tabindex="0" aria-labelledby="css-title">
+                    <h4 id="css-title">CSS</h4>
+                    <p>CSS (Cascading Style Sheets) define o estilo e layout visual do conteúdo HTML.</p>
+                    <pre><code>p { color: var(--primaria); }</code></pre>
+                    <p>Use para estilizar, temas e responsividade.</p>
+                </article>
+                <article class="card" tabindex="0" aria-labelledby="js-title">
+                    <h4 id="js-title">JavaScript</h4>
+                    <p>JavaScript adiciona interatividade e lógica no cliente (navegador).</p>
+                    <pre><code>document.querySelector('p').textContent = 'Olá';</code></pre>
+                    <p>Use para comportamento dinâmico, validações e manipulação DOM.</p>
+                </article>
+            </div>
+        </section>
     </main>
 
     <!-- Rodapé com informações de créditos -->
     <footer>
-        <p>&copy; 2025 - Desenvolvido por <a href="https://github.com/pietromachuca14" target="_blank">pietromachuca14</a></p>
+        <p>&copy; 2025 - Desenvolvido por <a href="https://github.com/pietromachuca14" target="_blank">Pietro Machuca</a></p>
     </footer>
 
     <!-- Scripts -->
