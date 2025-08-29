@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Guia Web | Fluxo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         .timeline{display:flex;gap:1rem;overflow:auto;padding:1rem 0}
         .step{min-width:200px;background:var(--fundo);border:1px solid var(--bordas);padding:1rem;border-radius:8px}
@@ -16,7 +16,8 @@
 <body>
     <header>
         <div class="logo"><h1>Guia Profissional de Desenvolvimento Web</h1></div>
-        <nav aria-label="Navegação principal">
+        <button id="menu-toggle" class="menu-toggle" aria-controls="main-nav" aria-expanded="false">☰<span class="sr-only">Abrir menu</span></button>
+        <nav id="main-nav" aria-label="Navegação principal">
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="tecnologias.html">Tecnologias</a></li>
@@ -59,7 +60,7 @@
         <div id="tooltip" class="tooltip" role="status"></div>
     </main>
 
-    <script src="/js/app.js"></script>
+    <script src="js/app.js"></script>
     <script>
         const steps = document.querySelectorAll('.step');
         const tooltip = document.getElementById('tooltip');

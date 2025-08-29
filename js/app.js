@@ -1,6 +1,8 @@
-// Gerenciamento de tema
+// Gerenciamento de tema e UI
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
+const menuToggle = document.getElementById('menu-toggle');
+const mainNav = document.getElementById('main-nav');
 
 function applyTheme(theme){
     if(theme === 'dark'){
@@ -22,6 +24,15 @@ themeToggle.addEventListener('click', ()=>{
     applyTheme(next);
     localStorage.setItem('theme', next);
 });
+
+// Menu hambúrguer responsivo
+if(menuToggle && mainNav){
+    menuToggle.addEventListener('click', ()=>{
+        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!expanded));
+        if(!expanded){ mainNav.setAttribute('aria-hidden','false'); } else { mainNav.setAttribute('aria-hidden','true'); }
+    });
+}
 
 // Busca simples para Tecnologias - se houver página
 const searchInput = document.getElementById('search-tech');
