@@ -8,6 +8,10 @@
 
     --font-titulo: 'Poppins', sans-serif;
     --font-texto: 'Inter', sans-serif;
+    --radius: 10px;
+    --gap: 1rem;
+    --shadow-sm: 0 4px 12px rgba(16,24,40,0.06);
+    --shadow-md: 0 8px 24px rgba(16,24,40,0.12);
 }
 
 [data-theme="dark"]{
@@ -28,13 +32,14 @@ body{
 header{
     position:fixed;
     top:0;left:0;right:0;
-    background:var(--fundo);
-    border-bottom:1px solid var(--bordas);
+    background:linear-gradient(to right, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid rgba(0,0,0,0.04);
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:1rem;
-    padding:1rem 2rem;
+    padding:.75rem 1.25rem;
     z-index:1000;
 }
 
@@ -53,11 +58,20 @@ nav[aria-hidden="false"]{opacity:1;transform:translateY(0);pointer-events:auto}
 
 .cta{display:inline-block;background:var(--primaria);color:white;padding:.6rem 1rem;border-radius:8px;text-decoration:none}
 
+.cta:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+
+.container{max-width:1100px;margin:0 auto;padding:0 1rem}
+
+.header-links{display:flex;align-items:center;gap:.75rem}
+.header-links a{padding:.35rem .5rem;border-radius:8px}
+.header-links a:hover{background:rgba(37,99,235,0.08)}
+
 .badge{background:var(--bordas);color:var(--texto);padding:.2rem .4rem;border-radius:6px;font-size:.8rem;margin-left:.5rem}
 
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);align-items:center;justify-content:center}
-.modal.open{display:flex}
-.modal-content{background:var(--fundo);padding:1rem;border-radius:8px;max-width:600px;width:90%;border:1px solid var(--bordas)}
+.modal.open{display:flex;animation:fadeIn .18s ease}
+.modal-content{background:var(--fundo);padding:1.25rem;border-radius:var(--radius);max-width:640px;width:92%;border:1px solid var(--bordas);box-shadow:var(--shadow-md);transform-origin:center;}
+.modal-content h2{margin-top:0}
 .modal .modal-close{float:right}
 
 .card-actions{display:flex;gap:.5rem;margin-top:.5rem}
@@ -74,16 +88,23 @@ main{padding:6rem 2rem 2rem}
 
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
 .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--bordas);padding:1rem;border-radius:8px}
-.card pre{background:rgba(0,0,0,0.05);padding:0.5rem;border-radius:6px;overflow:auto}
+.card{transition:transform .18s ease, box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-sm)}
+.card pre{background:rgba(0,0,0,0.04);padding:0.5rem;border-radius:6px;overflow:auto}
 
 footer{border-top:1px solid var(--bordas);padding:1rem 2rem;text-align:center;margin-top:2rem}
+
+/* rodapé mais elegante */
+footer{background:transparent;padding:2rem 1rem}
+footer p{margin:0;color:var(--texto);opacity:.8}
 
 /* mobile */
 @media (max-width:600px){
     .hero h2{font-size:1.5rem}
     nav{display:none}
     .menu-toggle{display:inline-block}
-    nav[aria-hidden="false"]{display:block;position:absolute;top:64px;left:0;right:0;background:var(--fundo);padding:1rem;border-top:1px solid var(--bordas)}
+    nav[aria-hidden="false"]{display:block;position:fixed;top:56px;left:0;right:0;background:var(--fundo);padding:1rem;border-top:1px solid var(--bordas);box-shadow:var(--shadow-sm)}
+    .hero{padding-top:3.5rem}
 }
 
 .focus-visible:focus{outline:3px solid var(--secundaria);outline-offset:2px}
@@ -98,3 +119,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     outline:3px solid var(--secundaria);
     outline-offset:3px;
 }
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* pequenas melhorias tipográficas */
+body{line-height:1.5;font-size:16px}
+.hero p{font-size:1.05rem;color:rgba(17,24,39,0.85)}
+.hero h2{font-size:2.2rem}
+
+.cards{margin-top:1.5rem}
+
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+
+.card h3{margin:0 0 .4rem 0}
+.card p{margin:.25rem 0}
