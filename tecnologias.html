@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Guia Web | Tecnologias</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.min.css">
 </head>
 <body>
     <header>
@@ -31,12 +31,12 @@
                 <input id="search-tech" type="search" placeholder="Pesquisar tecnologias..." aria-label="Pesquisar tecnologias">
 
                 <div class="filters" role="group" aria-label="Filtrar por categoria">
-                    <button class="filter" data-cat="all" aria-pressed="true">Todas</button>
-                    <button class="filter" data-cat="frontend">Front-end</button>
-                    <button class="filter" data-cat="backend">Back-end</button>
-                    <button class="filter" data-cat="db">Bancos</button>
-                    <button class="filter" data-cat="devops">DevOps</button>
-                    <button class="filter" data-cat="testes">Testes</button>
+                    <button class="filter" data-cat="all" aria-pressed="true" aria-controls="tech-grid">Todas</button>
+                    <button class="filter" data-cat="frontend" aria-pressed="false" aria-controls="tech-grid">Front-end</button>
+                    <button class="filter" data-cat="backend" aria-pressed="false" aria-controls="tech-grid">Back-end</button>
+                    <button class="filter" data-cat="db" aria-pressed="false" aria-controls="tech-grid">Bancos</button>
+                    <button class="filter" data-cat="devops" aria-pressed="false" aria-controls="tech-grid">DevOps</button>
+                    <button class="filter" data-cat="testes" aria-pressed="false" aria-controls="tech-grid">Testes</button>
                 </div>
                 <button id="export-csv">Exportar CSV</button>
             </div>
@@ -49,9 +49,9 @@
         </section>
     </main>
 
-    <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content" role="document">
-            <button class="modal-close" aria-label="Fechar">Fechar</button>
+            <button class="modal-close" aria-label="Fechar" id="modal-close">Fechar</button>
             <div id="modal-body"></div>
         </div>
     </div>
@@ -119,16 +119,22 @@
         function openModal(t){
             const modal = document.getElementById('modal');
             const body = document.getElementById('modal-body');
-            body.innerHTML = `<h2>${t.name}</h2><p>${t.desc}</p><ul><li>Quando escolher:</li><li>${t.pros[0]}</li><li>${t.pros[1]}</li><li>${t.cons[0]}</li></ul><p><a href="${t.link}" target="_blank">Site oficial</a></p>`;
+            body.innerHTML = `<h2 id="modal-title">${t.name}</h2><p>${t.desc}</p><ul><li>Quando escolher:</li><li>${t.pros[0]}</li><li>${t.pros[1]}</li><li>${t.cons[0]}</li></ul><p><a href="${t.link}" target="_blank">Site oficial</a></p>`;
             modal.classList.add('open');
             modal.setAttribute('aria-hidden','false');
+            const close = document.getElementById('modal-close');
+            close.focus();
         }
 
         // Export CSV básico
         document.getElementById('export-csv').addEventListener('click', ()=>{
             const visible = Array.from(document.querySelectorAll('.tech-card')).filter(c=>c.style.display !== 'none');
             const rows = visible.map(c=>{
-                return [c.querySelector('h3').textContent.trim(), c.dataset.cat, c.querySelector('p').textContent.trim()];
+                const title = c.querySelector('h3').childNodes[0].textContent.trim();
+                const cat = c.dataset.cat;
+                const pros = c.querySelector('p:nth-of-type(2)')?.textContent.replace('Prós:','').trim() || '';
+                const cons = c.querySelector('p:nth-of-type(3)')?.textContent.replace('Contras:','').trim() || '';
+                return [title, cat, pros, cons];
             });
             if(rows.length===0){ alert('Nenhuma tecnologia selecionada'); return }
             const csv = rows.map(r=>r.map(v=>'"'+v.replace(/"/g,'""')+'"').join(',')).join('\n');

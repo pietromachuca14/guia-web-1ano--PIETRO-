@@ -32,6 +32,20 @@ if(menuToggle && mainNav){
         menuToggle.setAttribute('aria-expanded', String(!expanded));
         if(!expanded){ mainNav.setAttribute('aria-hidden','false'); } else { mainNav.setAttribute('aria-hidden','true'); }
     });
+    // fechar menu ao clicar em um link
+    mainNav.addEventListener('click', (e)=>{
+        if(e.target.tagName === 'A'){
+            menuToggle.setAttribute('aria-expanded','false');
+            mainNav.setAttribute('aria-hidden','true');
+        }
+    });
+    // fechar menu ao pressionar Esc
+    document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape'){
+            menuToggle.setAttribute('aria-expanded','false');
+            mainNav.setAttribute('aria-hidden','true');
+        }
+    });
 }
 
 // Busca simples para Tecnologias - se houver página
@@ -55,6 +69,15 @@ if(searchInput){
             const no = document.getElementById('no-results');
             if(no) no.style.display = 'none';
         }
+    });
+}
+
+// Atualiza UI de favoritos depois de re-renderizações
+function refreshFavButtons(){
+    document.querySelectorAll('[data-fav]').forEach(el=>{
+        const id = el.getAttribute('data-fav');
+        const favs = JSON.parse(localStorage.getItem('favs')||'[]');
+        if(favs.includes(id)) el.classList.add('is-fav'); else el.classList.remove('is-fav');
     });
 }
 
@@ -106,6 +129,9 @@ document.querySelectorAll('[data-fav]').forEach(el=>{
     updateFavUI(id);
     el.addEventListener('click', ()=> toggleFavorite(id));
 });
+
+// Garantir que os botões de favorito sejam atualizados após renderizações
+document.addEventListener('DOMContentLoaded', ()=> refreshFavButtons());
 
 // atalhos: '/' para focar busca, Alt+M para menu
 document.addEventListener('keydown', (e)=>{
