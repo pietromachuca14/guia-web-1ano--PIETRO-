@@ -31,7 +31,9 @@ body {
     font-family: var(--font-body);
     background-color: var(--light-background);
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.5s cubic-bezier(.4,0,.2,1), color 0.5s cubic-bezier(.4,0,.2,1);
+    opacity: 1;
+    transition-property: background-color, color, opacity;
 }
 
 /* Estilos do header */
@@ -45,7 +47,12 @@ header {
     align-items: center;
     padding: 1rem 2rem;
     background-color: var(--light-background);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    transition: box-shadow 0.3s;
+}
+header:hover {
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
+}
     z-index: 1000;
 }
 
@@ -66,7 +73,15 @@ nav a {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 600;
-    transition: color 0.3s ease;
+    transition: color 0.3s, text-shadow 0.3s;
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+}
+nav a:hover {
+    color: var(--primary-color);
+    background: rgba(37,99,235,0.08);
+    text-shadow: 0 2px 8px rgba(37,99,235,0.12);
+/* Removido chave extra */
 }
 
 nav a:hover {
@@ -82,7 +97,13 @@ nav a:hover {
     border-radius: 4px;
     cursor: pointer;
     font-family: var(--font-body);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+#theme-toggle:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 4px 16px rgba(16,185,129,0.18);
+/* Removido chave extra */
 }
 
 #theme-toggle:hover {
@@ -94,12 +115,82 @@ main {
     margin-top: 80px;
     padding: 2rem;
     min-height: calc(100vh - 160px);
+    animation: fadeIn 0.7s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+/* Removido chave extra */
 }
 
 main h1 {
     font-family: var(--font-headings);
     color: var(--primary-color);
     margin-bottom: 2rem;
+}
+
+/* Cards de tecnologias */
+.tech-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.tech-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: box-shadow 0.3s;
+}
+.tech-card:hover {
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
+    border-color: var(--primary-color);
+}
+.tech-icon {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+.tech-card strong {
+    font-family: var(--font-headings);
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+.tech-card p {
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.5rem 1.2rem;
+    background: var(--primary-color);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+.btn:hover {
+    background: var(--secondary-color);
+    box-shadow: 0 4px 16px rgba(16,185,129,0.18);
+    transform: translateY(-2px) scale(1.04);
+}
+    margin: 0.2rem 0 0 0;
+    color: var(--text-color);
+    font-size: 1rem;
+/* Removido chave extra */
 }
 
 /* Estilos do footer */

@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
 
+    // Função para animar fade
+    function fadeBody() {
+        body.style.opacity = 0.3;
+        setTimeout(() => {
+            body.style.opacity = 1;
+        }, 350);
+    }
+
     // Verifica o tema salvo no localStorage ao carregar a página
     const checkSavedTheme = () => {
         const savedTheme = localStorage.getItem('theme');
@@ -17,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adiciona o evento de clique ao botão de toggle
     themeToggle.addEventListener('click', () => {
+        fadeBody();
         if (body.getAttribute('data-theme') === 'dark') {
             // Remove o tema escuro
             body.removeAttribute('data-theme');
